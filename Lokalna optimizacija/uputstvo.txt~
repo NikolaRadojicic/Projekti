@@ -1,0 +1,8 @@
+-Program 'optim' radi lokalnu optimizaciju fragmenta troadresnog koda.
+-Program radi samo sa celim pozitivnim brojevima
+-Podrzane operacije su + - * / << >>
+-Da bi se program pokrenuo prvo se u terminal ukuca 'make' , zatim se program pokrece sa ./optim ime_ulaznog_fajla 
+-U fajlu sa kodovima data su 3 test fajla : test1 , test2 , test3
+-Kao rezultat program upisuje u fajl 'rezultat.txt' svaki korak optimizacije , i moze se tacno pratiti sta se desava sa kodom prilikom svake od optimizacija.
+
+  

@@ -1,0 +1,172 @@
+%{
+	#include "syntree.hpp"
+	#define YYDEBUG 1
+	#include<iostream>
+	#include<cstdlib>
+	#include<string>
+	#include<vector>
+	#include<map>
+	#include<cstdio>
+	using namespace std;
+		
+	extern int yylex();
+
+	void yyerror(string s){
+		cerr << s << endl;
+		exit(EXIT_FAILURE);	
+	}
+
+	FILE* f;	
+	extern FILE* yyin*;
+
+	map<int,string> opt_name;
+	vector<Instruction*> vInst;
+
+	map<string,string> tableId;
+	map<string,int> tableInt;
+	map<string,string> tableType;
+
+	map<string,pair<string,string> > instPrint;
+
+	vector<string>operandsNameTable;
+	map<string,int> instructionNumberTable;
+	int instructionNumber = 0;
+	bool changed = false;
+
+	void empty_all(){
+
+		tableId.clear();
+		tableInt.clear();
+		tableType.clear();
+		instPrint.clear();
+		operandsNameTable.clear();
+		instructionNumberTable.clear();
+		instructionNumber = 0;
+	}
+
+	string IdOfLastInstruction;
+%}
+
+%union{
+
+	string* s;
+	int i;
+	Instruction* inst;
+	vector<Instruction*>* vi;
+}
+
+%token right_shift_token left_shift_token
+%token<i> num_token
+%token<s> id_token
+%type<vi> Instructions 
+%type<inst> Instruction 
+%type<s> Operator
+
+%left right_shift_token left_shift_token
+%left '+' '-'
+%left '*' '/'
+
+
+%%
+
+Program : Instructions	{	vInst = *$1; 
+
+													IdOfLastInstruction = vInst[vInst.size()-1]->getIdName();
+
+													for(unsigned i = 0 ; i < vInst.size(); i++)	
+																	vInst[i]->print(true);
+
+													fprintf(f , "%s\n", "");
+
+													while(true){
+
+														fprintf(f , "%s\n", "************************************");
+
+														for(unsigned j = 0; j < 5 ; j++){		// postoji 5 vrsta optimizacija 
+
+																if( opt_name[j] == "Propagacija kopija" )				
+																		for(unsigned i = 0 ; i < vInst.size(); i++)
+																				vInst[i]->PropagFillTable();		//pripremamo tablicu sa podacima koju koristimo pri propagaciji
+
+																else if( opt_name[j] == "Uklanjanje podizraza" )
+																		for(unsigned i = 0 ; i < vInst.size(); i++)
+																				vInst[i]->ElimSubFillTable();	
+															
+																else if( opt_name[j] == "Uklanjanje mrtvog koda" )
+																		for(unsigned i = 0 ; i < vInst.size(); i++)
+																				vInst[i]->ElimDeadFillTable();
+
+																for(unsigned i = 0 ; i < vInst.size(); i++)
+																			vInst[i]->run_optimize(j);			// za svaku instrukciju se radi trenutna optimizacija 
+															
+																empty_all();		// brisemo sve podatke iz pomocnih tablica koje su koriscene u prethodnoj optimizaciji
+																
+																const char* output = opt_name[j].c_str();	
+																fprintf(f , "%s\n", output);		// u fajl se upisuje ime trenutne optimizacije
+
+																for(unsigned i = 0 ; i < vInst.size(); i++)
+																				vInst[i]->print(true);	// u fajl se upisuju sve instrukcije u trenutnom obliku 
+														
+																fprintf(f , "%s\n", "");
+	
+																}
+															
+															if(changed)
+																	changed = 0;			// ako se nije desila nijedna promena u nizu instrukcija znaci da je kraj petlje
+															else break;
+												
+														}
+															
+
+									  				}
+	|	{}
+;
+
+Instructions : Instructions Instruction ';'	{ $$ = $1; $$->push_back($2); }
+	| Instruction ';'		{ $$ = new vector<Instruction*>() ; $$->push_back($1); }
+;	
+
+Instruction : id_token '=' id_token { $$ = new Instruction(*$1,"",new Variable(*$3),NULL); }
+	| id_token '=' num_token	{ $$ = new Instruction(*$1,"",new Const($3),NULL); }
+	| id_token '=' id_token Operator id_token		{ $$ = new Instruction(*$1,*$4,new Variable(*$3),new Variable(*$5)); }
+	| id_token '=' num_token Operator id_token	{ $$ = new Instruction(*$1,*$4,new Const($3),new Variable(*$5)); }
+	| id_token '=' id_token Operator num_token	{ $$ = new Instruction(*$1,*$4,new Variable(*$3),new Const($5)); }
+	| id_token '=' num_token Operator num_token	{ $$ = new Instruction(*$1,*$4,new Const($3),new Const($5)); }
+
+Operator : '+'	{ $$ = new string("+");}	
+	| '-'  			{ $$ = new string("-");}
+	| '*' 			{ $$ = new string("*");}
+	| '/' 			{ $$ = new string("/");}
+	| right_shift_token { $$ = new string(">>");}
+	| left_shift_token	{ $$ = new string("<<");}
+
+;
+
+
+%%
+
+int main(int argc, char** argv){
+
+	if(argc != 2)
+		yyerror("Program se poziva: ./optim ime_ulaznog_fajla");
+
+	yyin = fopen(argv[1],"r");
+	if(yyin == NULL )
+		yyerror("Nepostojeci fajl ili losa putanja");
+
+	
+	opt_name[0] = "Algebarske transformacije";
+	opt_name[1] = "Slaganje konstanti";
+	opt_name[2] = "Propagacija kopija";
+	opt_name[3] = "Uklanjanje podizraza";
+	opt_name[4] = "Uklanjanje mrtvog koda";
+
+	//yydebug = 1;
+
+	f = fopen("rezultat.txt","w");
+	yyparse();	
+	fclose(f);
+
+
+	return 0;
+}

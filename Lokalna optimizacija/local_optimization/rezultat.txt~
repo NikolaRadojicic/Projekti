@@ -1,0 +1,134 @@
+a=3*1;
+b=a+a;
+c=b*b;
+d=c*8;
+e=c+0;
+f=e*8;
+g=d*32;
+h=g/16;
+
+************************************
+Algebarske transformacije
+a=3;
+b=2*a;
+c=b*b;
+d=c<<3;
+e=c;
+f=e<<3;
+g=d<<5;
+
+Slaganje konstanti
+a=3;
+b=2*a;
+c=b*b;
+d=c<<3;
+e=c;
+f=e<<3;
+g=d<<5;
+
+Propagacija kopija
+a=3;
+b=2*3;
+c=b*b;
+d=c<<3;
+e=c;
+f=c<<3;
+g=d<<5;
+
+Uklanjanje podizraza
+a=3;
+b=2*3;
+c=b*b;
+d=c<<3;
+e=c;
+f=d;
+g=d<<5;
+
+Uklanjanje mrtvog koda
+b=2*3;
+c=b*b;
+d=c<<3;
+g=d<<5;
+
+************************************
+Algebarske transformacije
+b=3<<1;
+c=b*b;
+d=c<<3;
+g=d<<5;
+
+Slaganje konstanti
+b=6;
+c=b*b;
+d=c<<3;
+g=d<<5;
+
+Propagacija kopija
+b=6;
+c=6*6;
+d=c<<3;
+g=d<<5;
+
+Uklanjanje podizraza
+b=6;
+c=6*6;
+d=c<<3;
+g=d<<5;
+
+Uklanjanje mrtvog koda
+c=6*6;
+d=c<<3;
+g=d<<5;
+
+************************************
+Algebarske transformacije
+c=6*6;
+d=c<<3;
+g=d<<5;
+
+Slaganje konstanti
+c=;
+d=c<<3;
+g=d<<5;
+
+Propagacija kopija
+c=;
+d=c<<3;
+g=d<<5;
+
+Uklanjanje podizraza
+c=;
+d=c<<3;
+g=d<<5;
+
+Uklanjanje mrtvog koda
+c=;
+d=c<<3;
+g=d<<5;
+
+************************************
+Algebarske transformacije
+c=;
+d=c<<3;
+g=d<<5;
+
+Slaganje konstanti
+c=;
+d=c<<3;
+g=d<<5;
+
+Propagacija kopija
+c=;
+d=c<<3;
+g=d<<5;
+
+Uklanjanje podizraza
+c=;
+d=c<<3;
+g=d<<5;
+
+Uklanjanje mrtvog koda
+c=;
+d=c<<3;
+g=d<<5;
+
