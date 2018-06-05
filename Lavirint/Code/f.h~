@@ -1,0 +1,20 @@
+/* Struktura kojom opisujemo sve loptice koje cemo imati na poligonu */
+typedef struct LOPTA{
+	
+	float precnik;
+	float x_pos;
+	float y_pos;
+	float z_pos;	
+	
+	int red_poligona;
+	int kolona_poligona;
+}lopta;
+
+/* Callback funkcije */
+void on_reshape(int width,int height);
+void on_display(void);
+void on_keyboard(unsigned char key, int x, int y);
+/* Funkcija kojom proveravamo da li lopta moze da se pomeri u stranu */
+int ispravno_kretanje(lopta loptica,char komanda);
+/* Funkcija koja crta poligon */
+void PaintPolygon(void);

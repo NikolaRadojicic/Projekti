@@ -1,0 +1,34 @@
+1.Pruzmite ceo direktorijum 'Code' sa GitHub-a na svoj racunar.
+2.Zatim iz terminala udjite u direktorijum Code koji ste preuzeli i kada se nadjete u njemu ukucajte komandu 'make'.
+3.Zatim se igra moze pokrenuti tako sto ukucate ./lavirint
+
+Dalje je opisana sama igra i uputstvo za igru:
+
+Igra Lavirint se odvija u jednom zatvorenom lavirintu u kome su glavni akteri loptice razlicitih boja i dimenizija.Vi kao korisnik mozete upravljati zutom lopticom (herojem).Upravlja se preko tastera 'w','a','s','d'.
+
+Na pocetku se u donjem desnom uglu pojavljuje zuta loptica koja je nas heroj i kojom mozemo upravljati, a skroz u gornjem levom uglu se pojavljuje vise neprijateljskih loptica.
+
+Broj neprijateljskih loptica koji ce se pojaviti zavisi od tezine izabrane igre(low - 3 loptice , medium - 6 loptica , high - 9 loptica).
+
+Postoje 3 vrste neprijateljskih loptica :
+
+zelena - level 1
+aqua(kombinacija plave i zelene) - level 2
+roze - level 3
+
+Level odredjuje jacinu loptice, sto je loptica vece dimenzije to je level veci.
+Nasa zuta loptica je level 1 na pocetku i sme jesti samo loptice istog levela, u slucaju da se dodirne sa lopticom veceg levela igra ce biti gotova.Kada pojedemo sve loptice levela 1 ,heroj ce postati level 2 i moci ce da jede loptice levela 2 , i sve tako.
+
+Ono sto olaksava igru je da gore u crnom delu pise 'Must eat' , sto nam govori koju lopticu smemo da pojedemo.
+
+Jednom u igri mozemo ukljuciti nevidljivi mod i onda loptica moze prolaziti kroz druge loptice bez obzira na level, taj mod traje dve sekunde,pa moramo paziti na vreme.Kada se ovaj mod ukljuci loptica postaje crne boje.
+
+Poenta igre je da za sto manje vremena sve neprijateljske loptice budu pojedene. Na raspolaganju imamo 40 sekundi, ako za to vreme ne uspemo da zavrsimo igru ispisace se 'GAME OVER'.
+
+KOMANDE U IGRI:
+
+w,a,s,d  - kretanje
+SPACE - ukljucivanje nevidljivosti
+p - pauza
+ESC - otvara se meni sa opcijama
+q - izlaz iz igre

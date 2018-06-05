@@ -1,0 +1,3 @@
+Easy 28
+Medium 9
+High 10
